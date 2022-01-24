@@ -762,6 +762,21 @@ in
       let
         ledger-core-version = "4.2.0";
 
+        no-download-patch = pkgs.writeText "no-download-patch" ''
+          diff --git a/core/lib/cmake/ProjectSecp256k1.cmake b/core/lib/cmake/ProjectSecp256k1.cmake
+          index 270619f95..a49cf9124 100644
+          --- a/core/lib/cmake/ProjectSecp256k1.cmake
+          +++ b/core/lib/cmake/ProjectSecp256k1.cmake
+          @@ -36,6 +36,7 @@ ExternalProject_Add(
+                   PREFIX "''${prefix}"
+                   DOWNLOAD_NAME secp256k1-ac8ccf29.tar.gz
+                   DOWNLOAD_NO_PROGRESS 1
+          +        DOWNLOAD_COMMAND true
+                   URL https://github.com/chfast/secp256k1/archive/ac8ccf29b8c6b2b793bc734661ce43d1f952977a.tar.gz
+                   URL_HASH SHA256=02f8f05c9e9d2badc91be8e229a07ad5e4984c1e77193d6b00e549df129e7c3a
+                   PATCH_COMMAND ''${CMAKE_COMMAND} -E copy_if_different
+        '';
+
         ledger-core = pkgs.stdenv.mkDerivation {
           pname = "ledger-core";
           version = ledger-core-version;
@@ -772,6 +787,9 @@ in
             fetchSubmodules = true;
             sha256 = "sha256-6nfeHxWyKRm5dCYamaDtx53SqqPK+GJ8kqI37XdEtuI=";
           };
+
+          patches = no-download-patch;
+
           nativeBuildInputs = [
             pkgs.cmake
           ];
