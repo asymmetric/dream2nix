@@ -799,6 +799,8 @@ in
             chmod u+w core/lib/secp256k1/src/secp256k1/src
           '';
 
+          cmakeFlags = [ "-DBUILD_TESTS=OFF" ];
+
           nativeBuildInputs = [
             pkgs.cmake
           ];
