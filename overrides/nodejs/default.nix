@@ -790,6 +790,11 @@ in
 
           patches = no-download-patch;
 
+          postPatch = ''
+            mkdir -p core/lib/secp256k1/src/secp256k1
+            cp -r ${secp256k1-src}/* core/lib/secp256k1/src/secp256k1
+          '';
+
           nativeBuildInputs = [
             pkgs.cmake
           ];
@@ -805,12 +810,6 @@ in
           buildInputs = [
             ledger-core
           ];
-
-          # TODO: patch core/lib/cmake/ProjectSecp256k1.cmake
-          #       to use this secp256k1 instead of downloading from github
-          postPatch = ''
-            cp -r ${secp256k1-src} ./secp256k1
-          '';
 
           preBuild = ''
             # npm --nodedir=$nodeSources run install
