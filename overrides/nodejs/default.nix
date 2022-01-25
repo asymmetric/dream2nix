@@ -793,6 +793,10 @@ in
           postPatch = ''
             mkdir -p core/lib/secp256k1/src/secp256k1
             cp -r ${secp256k1-src}/* core/lib/secp256k1/src/secp256k1
+
+            # the build needs to be able to create the
+            # src/ecmult_static_context.h file
+            chmod u+w core/lib/secp256k1/src/secp256k1/src
           '';
 
           nativeBuildInputs = [
