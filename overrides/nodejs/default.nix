@@ -804,6 +804,12 @@ in
           nativeBuildInputs = [
             pkgs.cmake
           ];
+
+          # `make install` is broken, and we only need the libledger-core.so file anyway
+          # https://github.com/LedgerHQ/lib-ledger-core-node-bindings/blob/ced62d392eff27ab153e8a5f330c92e9cd72b92c/preinstall.js#L9
+          installPhase = ''
+            install -D -t $out/lib core/src/libledger-core.so
+          '';
         };
 
         secp256k1-src = pkgs.fetchzip {
