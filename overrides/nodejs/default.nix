@@ -819,7 +819,7 @@ in
 
       in
         {
-          buildInputs = [
+          buildInputs = old: old ++ [
             ledger-core
           ];
 
